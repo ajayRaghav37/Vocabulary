@@ -1,0 +1,132 @@
+div.background {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  z-index: -1;
+  margin: -14px;
+  filter: blur(7px);
+  background-size: cover;
+  background-position: 50% 20%;
+  background-color: darkslategray;
+}
+
+div.curtain {
+  background-color: black;
+}
+
+button {
+  position: absolute;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  left: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(128, 128, 128, 0.2);
+  font-size: 5vmin;
+  padding: 0;
+  padding-top: 1vmin;
+  margin: 1vmin;
+  width: 12vmin;
+  height: 12vmin;
+  max-width: 65px;
+  max-height: 65px;
+  min-width: 30px;
+  min-height: 30px;
+}
+
+button.right {
+  left: unset;
+  right: 0px;
+}
+
+button.round-top {
+  height: 6vmin;
+  width: 6vmin;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 3vmin;
+  padding-top: 1vmin;
+  border-radius: 50%;
+  right: 0;
+  left: unset;
+  background-color: rgba(128, 128, 128, 0.15);
+  top: 0;
+  transform: unset;
+}
+
+input[type="range"].right {
+  left: unset;
+  right: 1px;
+  transform-origin: 100%;
+  transform: rotate(-90deg);
+}
+
+input[type="range"] {
+  width: 30vh;
+  -webkit-appearance: none;
+  height: 2px;
+  outline: none;
+  opacity: 0.1;
+  transition: opacity .2s;
+  transform: rotate(-90deg) translateX(-100%);
+  transform-origin: 0px;
+  position: absolute;
+  top: 50%;
+  left: 1px;
+  margin: 9vmin;
+}
+
+input[type="range"]:hover,
+input[type="range"]:focus {
+  opacity: 0.6;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 2vmin;
+  height: 2vmin;
+  border-radius: 50%;
+  background: gray;
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 2vmin;
+  height: 2vmin;
+  background: gray;
+  cursor: pointer;
+}
+
+.settingLabel {
+  top: 72%;
+  position: absolute;
+  color: rgba(255, 255, 255, 0.2);
+  left: 3vmin;
+  font-size: 4vmin;
+}
+
+.settingLabel.right {
+  left: unset;
+  right: 3vmin;
+}
+
+.pulsate {
+  animation: pulsate 2s ease-out;
+  animation-iteration-count: infinite;
+  filter: blur(7px);
+}
+
+@keyframes pulsate {
+  0% {
+    background-color: darkslategrey;
+  }
+  50% {
+    filter: blur(33px);
+    background-color: #001f1f;
+  }
+  100% {
+    filter: blur(7px);
+    background-color: darkslategrey;
+  }
+}

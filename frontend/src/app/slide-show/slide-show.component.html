@@ -1,0 +1,20 @@
+<div class="background" [ngClass]="{'pulsate':disabledButtons}" [ngStyle]="{'margin': -2*blurness + 'px',
+    'filter':'blur(' +blurness + 'px)',
+    'background-image':selIndex>-1?'url(' + imgUrls[selIndex] + ')':unset}">
+</div>
+<div class="background curtain" [style.opacity]="darkness"></div>
+<button [disabled]="disabledButtons || selIndex===0" (click)="changeImage(-1)">
+  <span class="glyphicon glyphicon-chevron-left"></span>
+</button>
+<button [disabled]="disabledButtons || selIndex+1===imgUrls.length" class="right" (click)="changeImage(1)">
+  <span class="glyphicon glyphicon-chevron-right"></span>
+</button>
+<button class="round-top" (click)="showSettings = !showSettings">
+  <span class="glyphicon glyphicon-cog"></span>
+</button>
+<div *ngIf="showSettings">
+    <input type="range" min="0" max="1" step="0.01" [(ngModel)]="darkness">
+    <input class="right" type="range" min="0" max="40" [(ngModel)]="blurness">
+    <span class="settingLabel glyphicon glyphicon-adjust"></span>
+    <span class="right settingLabel glyphicon glyphicon-tint"></span>    
+</div>
