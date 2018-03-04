@@ -1,30 +1,48 @@
 var LocalStrategy = require('passport-local').Strategy;
 var bCrypt = require('bcrypt-nodejs');
+var mongoose = require('mongoose');
 
-//temporary data store
-var users = {};
+require('./models/user');
+
+var user = mongoose.model('user');
+
 module.exports = function (passport) {
 
     // Passport needs to be able to serialize and deserialize users to support persistent login sessions
     passport.serializeUser(function (user, done) {
-        return done(null, user.username);
+        return done(null, user._id);
     });
 
-    passport.deserializeUser(function (username, done) {
-        return done(null, users[username]);
+    passport.deserializeUser(function (id, done) {
+        user.findById(id, (err, doc) => {
+            if (err)
+                return done(err, false);
+
+            if (doc === undefined)
+                return done('User not found', false);
+
+            return done(null, doc);
+        });
     });
 
     passport.use('login', new LocalStrategy({
             passReqToCallback: true
         },
         function (req, username, password, done) {
-            if (users[username] === undefined)
-                return done(null, false);
+            user.findOne({
+                username: username
+            }, (err, doc) => {
+                if (err)
+                    return done(null, false);
 
-            if (!isValidPassword(users[username], password))
-                return done(null, false);
+                if (!doc)
+                    return done('User does not exist', false);
 
-            return done(null, users[username]);
+                if (!isValidPassword(doc, password))
+                    return done('Incorrect password', false);
+
+                return done(null, doc);
+            });
         }
     ));
 
@@ -32,15 +50,27 @@ module.exports = function (passport) {
             passReqToCallback: true // allows us to pass back the entire request to the callback
         },
         function (req, username, password, done) {
-            if (users[username] !== undefined)
-                return done(null, false);
+            user.findOne({
+                username: username
+            }, (err, doc) => {
+                if (err)
+                    return done(err, false);
 
-            users[username] = {
-                username: username,
-                password: createHash(password)
-            };
+                if (doc)
+                    return done('Username already taken', false);
 
-            return done(null, users[username]);
+                var newUser = new user();
+
+                newUser.username = username;
+                newUser.password = createHash(password);
+
+                newUser.save((err, doc) => {
+                    if (err)
+                        return done(err, false);
+
+                    return done(null, doc);
+                });
+            });
         }));
 
     var isValidPassword = function (user, password) {

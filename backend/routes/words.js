@@ -12,7 +12,7 @@ router.route('/')
 
   // returns words list
   .get(function (req, res) {
-    res.send('TODO return words list');
+    res.send('TODO return words list for user ' + req.user.username);
   })
 
   // adds a word

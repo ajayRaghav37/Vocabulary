@@ -6,6 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var session = require('express-session');
+var mongoose = require('mongoose');
+
+mongoose.connect('mongodb://localhost/vocabulary');
 
 var words = require('./routes/words');
 var auth = require('./routes/auth')(passport);
