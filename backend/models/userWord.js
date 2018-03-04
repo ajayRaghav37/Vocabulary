@@ -1,9 +1,28 @@
 var mongoose = require('mongoose');
 
 module.exports = function (username) {
+    if (mongoose.modelNames().indexOf(username + 'Word') > -1)
+        return;
+
     var wordSchema = new mongoose.Schema({
         word: {
             type: String,
+            required: true
+        },
+        posTag: {
+            type: String,
+            enum: [
+                'n', // noun
+                'prn', // pronoun
+                'v', // verb
+                'adv', // adverb
+                'adj', // adjective
+                'conj', // conjunction
+                'pre', // preposition
+                'int', // interjection
+                'num', // numeral
+                'det' // determiner
+            ],
             required: true
         },
         meaning: String,
@@ -15,9 +34,17 @@ module.exports = function (username) {
             default: 0
         },
         examples: [String],
-        related: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: username + 'Word'
+        relationScale: String,
+        relations: [{
+            wordId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: username + 'word'
+            },
+            scalePoint: {
+                type: Number,
+                min: -10,
+                max: 10
+            }
         }],
         imgUrls: [String],
         stats: {
@@ -31,6 +58,10 @@ module.exports = function (username) {
                 default: 0,
                 required: true
             }
+        },
+        globalId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'word'
         }
     });
 
